@@ -1,54 +1,46 @@
-const messageInput = document.getElementById("message");
-const toneSelect = document.getElementById("tone");
-const generateButton = document.getElementById("generateButton");
+const emailInput = document.getElementById("emailInput");
+const correctButton = document.getElementById("correctButton");
 const result = document.getElementById("result");
 
-generateButton.addEventListener("click", function () {
+correctButton.addEventListener("click", async function () {
 
-    const message = messageInput.value.trim();
-    const tone = toneSelect.value;
+    const text = emailInput.value.trim();
 
-    if (message === "") {
-        result.textContent = "Please write what you want to say first.";
+    if (text === "") {
+        result.textContent = "Please enter an email first.";
         return;
     }
 
-    let email = "";
+    result.textContent = "Correcting...";
 
-    if (tone === "professional") {
-        email = `Subject: Regarding Your Request
+    try {
 
-Dear [Name],
+        const response = await fetch(
+            "YOUR-EMAIL-WORKER-URL",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    text: text
+                })
+            }
+        );
 
-${message}
+        const data = await response.json();
 
-Thank you for your understanding.
+        if (!response.ok || !data.correctedText) {
+            throw new Error(data.error || "Correction failed");
+        }
 
-Best regards,
-[Your Name]`;
+        result.textContent = data.correctedText;
+
+    } catch (error) {
+
+        console.error(error);
+
+        result.textContent =
+            "Correction failed. Please try again.";
     }
-
-    else if (tone === "friendly") {
-        email = `Subject: Just a Quick Message
-
-Hi [Name],
-
-${message}
-
-Thanks for understanding!
-
-Best,
-[Your Name]`;
-    }
-
-    else if (tone === "short") {
-        email = `Hi [Name],
-
-${message}
-
-Thank you,
-[Your Name]`;
-    }
-
-    result.textContent = email;
 });
