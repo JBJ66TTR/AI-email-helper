@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Email Helper</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>✉️ AI Email Helper</h1>
+
+        <p>Write what you want to say, and turn it into a better email.</p>
+
+        <textarea
+            id="message"
+            placeholder="Example: I can't attend class tomorrow because I'm sick."
+        ></textarea>
+
+        <label for="tone">Choose a style:</label>
+
+        <select id="tone">
+            <option value="professional">Professional</option>
+            <option value="friendly">Friendly</option>
+            <option value="short">Short</option>
+        </select>
+
+        <button id="generateButton">
+            Generate Email
+        </button>
+
+        <h2>Your Email</h2>
+
+        <div id="result">
+            Your generated email will appear here.
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
