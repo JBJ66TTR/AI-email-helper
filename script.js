@@ -1,29 +1,31 @@
-const emailInput = document.getElementById("emailInput");
-const correctButton = document.getElementById("correctButton");
+const messageInput = document.getElementById("message");
+const generateButton = document.getElementById("generateButton");
+const toneSelect = document.getElementById("tone");
 const result = document.getElementById("result");
 
-correctButton.addEventListener("click", async function () {
+generateButton.addEventListener("click", async () => {
 
-    const text = emailInput.value.trim();
+    const text = messageInput.value.trim();
+    const tone = toneSelect.value;
 
-    if (text === "") {
-        result.textContent = "Please enter an email first.";
+    if (!text) {
+        result.textContent = "Please write something first.";
         return;
     }
 
-    result.textContent = "Correcting...";
+    result.textContent = "Correcting your email...";
 
     try {
-
         const response = await fetch(
-            "YOUR-EMAIL-WORKER-URL",
+            "https://patient-bird-31ce.maazouzsara66.workers.dev/",
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    text: text
+                    text: text,
+                    tone: tone
                 })
             }
         );
@@ -37,10 +39,7 @@ correctButton.addEventListener("click", async function () {
         result.textContent = data.correctedText;
 
     } catch (error) {
-
-        console.error(error);
-
-        result.textContent =
-            "Correction failed. Please try again.";
+        console.error("Email Helper error:", error);
+        result.textContent = "Correction failed. Please try again.";
     }
 });
